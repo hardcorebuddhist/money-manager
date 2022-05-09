@@ -1,8 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { deposit, withdraw } from "./store/balance/slice";
+import { deposit, withdraw, reset } from "./store/balance/slice";
 import { selectBalance } from "./store/balance/selectors";
+import { useState } from "react";
 
 function App() {
+  const [customAmount, setCustomAmount] = useState(0);
   const dispatch = useDispatch();
   const balance = useSelector(selectBalance);
 
@@ -28,6 +30,34 @@ function App() {
           Withdraw 10$
         </button>
       </div>
+      <div className="App">
+        <p>Balance: {balance}$</p>
+        <button
+          onClick={() => {
+            dispatch(reset());
+          }}
+        >
+          Reset
+        </button>
+      </div>
+      <br />
+      <br />
+      <input
+        type="number"
+        value={customAmount}
+        onChange={(event) => {
+          setCustomAmount(parseInt(event.target.value));
+        }}
+      />
+      <br />
+      <button
+        onClick={() => {
+          dispatch(deposit(customAmount));
+          setCustomAmount(0);
+        }}
+      >
+        Deposit custom amount
+      </button>
     </div>
   );
 }
